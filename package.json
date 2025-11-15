@@ -4,6 +4,10 @@
   "description": "Mailjet email delivery service for Medusa V2",
   "author": "TONYLABS <tony.wang@tonylabs.com>",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tonylabs/medusa-mailjet"
+  },
   "files": [
     ".medusa/server"
   ],
