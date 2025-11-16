@@ -71,7 +71,7 @@ module.exports = defineConfig({
         providers: [
           {
             id: "notification-mailjet",
-            resolve: "@gerbergpt/medusa-mailjet/providers/notification-mailjet",
+            resolve: "@gerbergpt/medusa-mailjet/providers/notifications-mailjet",
             options: {
               channels: ["email"],
               api_key: process.env.MAILJET_API_KEY,
@@ -164,8 +164,8 @@ module.exports = defineConfig({
       options: {
         providers: [
           {
-            resolve: "@gerbergpt/medusa-mailjet/providers/notification-mailjet",
             id: "notification-mailjet",
+            resolve: "@gerbergpt/medusa-mailjet/providers/notifications-mailjet",
             options: {
               channels: ["email"],
               api_key: process.env.MAILJET_API_KEY,
