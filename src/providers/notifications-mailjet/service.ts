@@ -17,7 +17,7 @@ type TemplateConfig<Props = Record<string, unknown>> = {
   template: TemplateFn<Props>
 }
 
-type ProviderOptions = {
+type Options = {
   api_key: string
   api_secret: string
   from_email: string
@@ -26,19 +26,19 @@ type ProviderOptions = {
   default_locale?: string
 }
 
-type ResolvedOptions = Omit<ProviderOptions, "templates" | "default_locale"> & {
+type ResolvedOptions = Omit<Options, "templates" | "default_locale"> & {
   templates: Record<string, TemplateConfig>
   default_locale: string
 }
 
 class MailjetNotificationProviderService extends AbstractNotificationProviderService {
-  static identifier = "notification-mailjet"
 
+  static identifier = "notification-mailjet"
   protected logger: Logger
   protected options: ResolvedOptions
   protected client?: MailjetClient
 
-  constructor({ logger }: InjectedDependencies, options: ProviderOptions) {
+  constructor({ logger }: InjectedDependencies, options: Options) {
     super()
     this.logger = logger
     this.options = {
@@ -46,10 +46,9 @@ class MailjetNotificationProviderService extends AbstractNotificationProviderSer
       templates: options.templates ?? {},
       default_locale: options.default_locale ?? "en",
     }
-    MailjetNotificationProviderService.validateOptions(this.options)
   }
 
-  static validateOptions(options: ProviderOptions) {
+  static validateOptions(options: Options) {
     if (!options.api_key) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -152,26 +151,20 @@ class MailjetNotificationProviderService extends AbstractNotificationProviderSer
     if (this.client) {
       return this.client
     }
-
     this.client = Mailjet.apiConnect(this.options.api_key, this.options.api_secret)
     return this.client
   }
 
   private resolveFrom(notification: ProviderSendNotificationDTO): SendEmailV3_1.EmailAddressTo {
     const email = (notification.from ?? this.options.from_email).trim()
-
     return {
       Email: email,
       Name: this.options.from_name,
     }
   }
 
-  private formatRecipients(
-    notification: ProviderSendNotificationDTO,
-    templateData: Record<string, unknown>
-  ): SendEmailV3_1.EmailAddressTo[] {
+  private formatRecipients( notification: ProviderSendNotificationDTO, templateData: Record<string, unknown> ): SendEmailV3_1.EmailAddressTo[] {
     const email = (notification.to ?? "").trim()
-
     if (!email) {
       throw new MedusaError(
         MedusaError.Types.INVALID_DATA,
@@ -190,10 +183,7 @@ class MailjetNotificationProviderService extends AbstractNotificationProviderSer
     ]
   }
 
-  private resolveTextContent(
-    notification: ProviderSendNotificationDTO,
-    templateData: Record<string, unknown>
-  ): string | undefined {
+  private resolveTextContent( notification: ProviderSendNotificationDTO, templateData: Record<string, unknown> ): string | undefined {
     if (notification.content?.text) {
       return notification.content.text
     }
@@ -207,9 +197,7 @@ class MailjetNotificationProviderService extends AbstractNotificationProviderSer
     return undefined
   }
 
-  private resolveReplyTo(
-    templateData: Record<string, unknown>
-  ): SendEmailV3_1.EmailAddressTo | undefined {
+  private resolveReplyTo( templateData: Record<string, unknown> ): SendEmailV3_1.EmailAddressTo | undefined {
     const replyEmailCandidate = templateData["reply_to_email"]
     const replyNameCandidate = templateData["reply_to_name"]
 
