@@ -11,5 +11,5 @@ export default async function customerRegisteredSubscriber({
 }
 
 export const config: SubscriberConfig = {
-  event: "customer.registered",
+  event: "customer.created",
 }
