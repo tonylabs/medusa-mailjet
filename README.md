@@ -34,7 +34,7 @@
 
 ## Compatibility
 
-This starter is compatible with versions >= 2.11.x of `@medusajs/medusa`. 
+This plugin is compatible with versions >= 2.11.x of `@medusajs/medusa`. 
 
 ## Table of Contents
 - [Prerequisites](#prerequisites)
